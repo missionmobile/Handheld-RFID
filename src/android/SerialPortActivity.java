@@ -74,6 +74,8 @@ public abstract class SerialPortActivity {
             this.cbCtx.error("The serial port can not be opened for an unknown reason.");
         } catch (InvalidParameterException e) {
             this.cbCtx.error("Please configure your serial port first.");
+        } catch (Exception e){
+            this.cbCtx.error("Unknown error");
         }
     }
 
