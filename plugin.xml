@@ -40,6 +40,8 @@
         </config-file>
 
         <source-file src="src/android/RFID.java" target-dir="src/de/mindsquare/rfid" />
+        <source-file src="src/android/SearchTagActivity.java" target-dir="src/de/mindsquare/rfid" />
+        <source-file src="src/android/SerialPortActivity.java" target-dir="src/de/mindsquare/rfid" />
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     </platform>
 </plugin>
