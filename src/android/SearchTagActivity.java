@@ -30,7 +30,7 @@ public class SearchTagActivity extends SerialPortActivity {
 
         if (mSerialPort != null) {
             mSendingThread = new SendingThread();
-            //mSendingThread.start();
+            mSendingThread.start();
         }
 
         mTagType = null;
