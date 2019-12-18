@@ -1,5 +1,6 @@
 package de.mindsquare.rfid;
 
+import android.app.Activity;
 import android.os.SystemClock;
 
 import com.handheldgroup.serialport.SerialPort;
@@ -12,7 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
 
-public abstract class SerialPortActivity {
+public abstract class SerialPortActivity extends Activity {
     protected SerialPort mSerialPort;
     protected OutputStream mOutputStream;
     private InputStream mInputStream;
@@ -20,13 +21,6 @@ public abstract class SerialPortActivity {
     private CallbackContext cbCtx;
 
     private class ReadThread extends Thread {
-
-        private CallbackContext cbCtx;
-
-        ReadThread(CallbackContext cbCtx){
-            this.cbCtx = cbCtx;
-        }
-
 
         @Override
         public void run() {
@@ -38,10 +32,7 @@ public abstract class SerialPortActivity {
                     if (mInputStream == null) return;
                     size = mInputStream.read(buffer);
                     if (size > 0) {
-                        onDataReceived(buffer, size, this.cbCtx);
-                    }
-                    if(this.cbCtx.isFinished()) {
-                        this.interrupt();
+                        onDataReceived(buffer, size, this);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -52,7 +43,6 @@ public abstract class SerialPortActivity {
     }
 
     public SerialPortActivity(CallbackContext cbCtx) {
-
         this.cbCtx = cbCtx;
 
         try {
@@ -65,23 +55,20 @@ public abstract class SerialPortActivity {
             mInputStream = mSerialPort.getInputStream();
 
             /* Create a receiving thread */
-            mReadThread = new ReadThread(cbCtx);
+            mReadThread = new ReadThread();
             mReadThread.start();
-
         } catch (SecurityException e) {
-            this.cbCtx.error("You do not have read/write permission to the serial port.");
+            cbCtx.error("Securiry Error");
         } catch (IOException e) {
-            this.cbCtx.error("The serial port can not be opened for an unknown reason.");
-        } catch (InvalidParameterException e) {
-            this.cbCtx.error("Please configure your serial port first.");
-        } catch (Exception e){
-            this.cbCtx.error("Unknown error");
+            cbCtx.error("Unknown Error");
+        } catch (InvalidParameterException e){
+            cbCtx.error("Wrong Config Error");
         }
     }
 
-    protected abstract void onDataReceived(final byte[] buffer, final int size, CallbackContext cbCtx);
+    protected abstract void onDataReceived(final byte[] buffer, final int size, Thread t);
 
-    /*
+    @Override
     protected void onDestroy() {
         if (mReadThread != null)
             mReadThread.interrupt();
@@ -89,5 +76,5 @@ public abstract class SerialPortActivity {
         mSerialPort = null;
         SerialPort.setUart3Enabled(false);
         super.onDestroy();
-    }*/
+    }
 }
