@@ -1,6 +1,8 @@
 package de.mindsquare.rfid;
 
 import android.util.Log;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 
 import org.apache.cordova.CallbackContext;
 
@@ -176,6 +178,8 @@ public class SearchTagActivity extends SerialPortActivity {
                 mID = String.format("%02X %02X %02X %02X", rxbuffer[5], rxbuffer[6], rxbuffer[7], rxbuffer[8]);
 
                 if(rxbuffer[5] != 0 && rxbuffer[6] != 0 && rxbuffer[7] != 0 && rxbuffer[8] != 0){
+                    ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);             
+                    toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,150);  
                     this.cbCtx.success(mID);
                     t.interrupt();
                     mSendingThread.interrupt();
