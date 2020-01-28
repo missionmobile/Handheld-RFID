@@ -16,7 +16,7 @@ public class SearchTagActivity extends SerialPortActivity {
     String mTagType, mIDBitCount, mID;
     Integer cmd;
 
-    SendingThread mSendingThread;
+    public SendingThread mSendingThread;
     byte[] txbuffer = new byte[50];
     byte[] rxbuffer_raw = new byte[200];
     byte[] rxbuffer = new byte[200];

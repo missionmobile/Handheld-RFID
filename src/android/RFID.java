@@ -38,6 +38,8 @@ import android.os.SystemClock;
 import android.telecom.Call;
 
 public class RFID extends CordovaPlugin {
+    SearchTagActivity sta = null;
+
     /**
      * Constructor.
      */
@@ -65,7 +67,9 @@ public class RFID extends CordovaPlugin {
      */
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
         if ("readRFID".equals(action)) {
-            this.readRFID(callbackContext);
+            this.read(callbackContext);
+        }else if("cancelRFID".equals(action)) {
+            this.cancel(callbackContext);
         }
         else {
             return false;
@@ -73,7 +77,16 @@ public class RFID extends CordovaPlugin {
         return true;
     }
 
-    public void readRFID(CallbackContext cbCtx){
-        SearchTagActivity sta = new SearchTagActivity(cbCtx);
+    public void read(CallbackContext cbCtx){
+        this.sta = new SearchTagActivity(cbCtx);
+    }
+
+    public void cancel(CallbackContext cbCtx){
+        // is the cordova plugin implementatio singleton?
+        if(this.sta != null){
+            this.sta.interrupt();
+            this.sta.mSendingThread.interrupt();
+            this.sta = null;
+        }
     }
 }
