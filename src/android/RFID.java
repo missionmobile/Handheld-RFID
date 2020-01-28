@@ -84,7 +84,6 @@ public class RFID extends CordovaPlugin {
     public void cancel(CallbackContext cbCtx){
         // is the cordova plugin implementatio singleton?
         if(this.sta != null){
-            this.sta.interrupt();
             this.sta.mSendingThread.interrupt();
             this.sta = null;
         }
