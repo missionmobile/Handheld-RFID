@@ -82,10 +82,11 @@ public class RFID extends CordovaPlugin {
     }
 
     public void cancel(CallbackContext cbCtx){
-        // is the cordova plugin implementatio singleton?
-        if(this.sta != null){
-            //this.sta.mSendingThread.interrupt();
-            this.sta = null;
-        }
+       // is the cordova plugin implementatio singleton?
+       if(this.sta != null){
+              //this.sta.mSendingThread.interrupt();
+              this.sta.onDestroy();
+              this.sta = null;
     }
+}
 }
