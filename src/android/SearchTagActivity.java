@@ -128,7 +128,7 @@ public class SearchTagActivity extends SerialPortActivity {
                 temp2 = (rxbuffer_raw[i * 2 + 1] >= 65) ? (rxbuffer_raw[i * 2 + 1] - 55) : (rxbuffer_raw[i * 2 + 1] - 48);
                 rxbuffer[i] = (byte) ((temp1 << 4) + temp2);
             }
-            if (rxbuffer[1] == 0x01) {                            // transponder found
+            if (rxbuffer[1] == 0x01 && size == 9) {                            // transponder found
                 int type;
                 type = rxbuffer[2];
                 if (type == 0x040)
