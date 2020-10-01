@@ -175,8 +175,8 @@ public class SearchTagActivity extends SerialPortActivity {
                     mTagType = String.format("%02X Hex", rxbuffer[2]);
 
                 mIDBitCount = String.format("%d", rxbuffer[3]);
-                mID = String.format("%02X %02X %02X %02X %02X", rxbuffer[5], rxbuffer[6], rxbuffer[7], rxbuffer[8], rxbuffer[9]);
-
+                mID = String.format("%02X%02X%02X%02X%02X", rxbuffer[5], rxbuffer[6], rxbuffer[7], rxbuffer[8], rxbuffer[9]);
+                
                 if(rxbuffer[5] != 0 && rxbuffer[6] != 0 && rxbuffer[7] != 0 && rxbuffer[8] != 0){
                     ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);             
                     toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,150);  
