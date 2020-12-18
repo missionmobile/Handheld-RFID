@@ -1,10 +1,10 @@
 {
-  "name": "msq_cordova-plugin-rfid",
-  "version": "0.0.1",
+  "name": "msq_msq_cordova-plugin-rfid",
+  "version": "0.0.2",
   "description": "Cordova RFID Plugin",
   "types": "./types/index.d.ts",
   "cordova": {
-    "id": "cordova-plugin-rfid",
+    "id": "msq_cordova-plugin-rfid",
     "platforms": [
       "android"
     ]
