@@ -31,5 +31,10 @@
     "eslint-plugin-node": "^5.0.0",
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1"
-  }
+  },
+  "repository": {
+  "type": "git",
+  "url": "https://github.com/missionmobile/Handheld-RFID.git"
+	}
+
 }
