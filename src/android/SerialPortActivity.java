@@ -5,7 +5,6 @@ import android.os.SystemClock;
 import android.os.Build;
 
 import com.handheldgroup.serialport.SerialPort;
-import com.lovdream.ILovdreamDevice;
 
 import org.apache.cordova.CallbackContext;
 
