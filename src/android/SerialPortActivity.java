@@ -2,6 +2,7 @@ package de.mindsquare.rfid;
 
 import android.app.Activity;
 import android.os.SystemClock;
+import android.os.Build;
 
 import com.handheldgroup.serialport.SerialPort;
 
