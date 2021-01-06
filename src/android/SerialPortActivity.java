@@ -53,6 +53,7 @@ public abstract class SerialPortActivity extends Activity {
             SystemClock.sleep(200);
             
             //TK add X6 support
+            SerialPort.setDevicePower(this, true); 
             if ("NAUTIZ_X6".equals(Build.MODEL)) {
             // "/dev/ttyHSL1" for new Nautiz X6
             	mSerialPort = new SerialPort(new File("/dev/ttyHSL1"), 9600, 0);
