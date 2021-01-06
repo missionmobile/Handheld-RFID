@@ -50,6 +50,12 @@ public abstract class SerialPortActivity extends Activity {
             // required starting with OS B031 - see http://kb.handheldgroup.com/22882 for more details on this change
             SerialPort.setUart3Enabled(true);
             SystemClock.sleep(200);
+            
+            File port = new File(SerialPort.getSerialPath()); 
+			SerialPort.setDevicePower(this, true); 
+			mSerialPort = new SerialPort(port, 9600, 0); 
+            
+            /*
             // "/dev/ttyMT3" for Nautiz X2
             mSerialPort = new SerialPort(new File("/dev/ttyMT3"), 9600, 0);
             
@@ -58,6 +64,7 @@ public abstract class SerialPortActivity extends Activity {
             // "/dev/ttyHSL1" for new Nautiz X6
              mSerialPort = new SerialPort(new File("/dev/ttyHSL1"), 9600, 0);
             }
+            */
             
             mOutputStream = mSerialPort.getOutputStream();
             mInputStream = mSerialPort.getInputStream();
