@@ -1,26 +1,5 @@
 package de.mindsquare.rfid;
 
-
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
-import android.os.IBinder;
-import android.os.SystemClock;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-
-import com.handheldgroup.serialport.SerialPort;
-// import com.lovdream.ILovdreamDevice;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.InvalidParameterException;
-
-/*
 import android.app.Activity;
 import android.os.SystemClock;
 import android.os.Build;
@@ -35,7 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.InvalidParameterException;
-*/
 
 public abstract class SerialPortActivity extends Activity {
     protected SerialPort mSerialPort;
