@@ -1,4 +1,4 @@
 dependencies {
     compile group: 'com.handheldgroup.tools', name: 'serialport', version: '1.4.0'
-    compile files('x6-lovdream.jar')
+    compile files('libs/x6-lovdream.jar')
 }
