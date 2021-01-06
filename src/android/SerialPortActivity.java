@@ -12,7 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.handheldgroup.serialport.SerialPort;
-import com.lovdream.ILovdreamDevice;
+// import com.lovdream.ILovdreamDevice;
 
 import java.io.File;
 import java.io.IOException;
@@ -75,6 +75,13 @@ public abstract class SerialPortActivity extends Activity {
             SerialPort.setUart3Enabled(true);
             SystemClock.sleep(200);
             
+            File port = new File(SerialPort.getSerialPath()); 
+			SerialPort.setDevicePower(this, true); 
+			mSerialPort = new SerialPort(port, 9600, 0); 
+			mOutputStream = mSerialPort.getOutputStream(); 
+			mInputStream = mSerialPort.getInputStream(); 
+            
+            /*
             //TK add X6 support
 	        File port = new File("/dev/ttyMT3");
 	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -93,6 +100,7 @@ public abstract class SerialPortActivity extends Activity {
             mSerialPort = new SerialPort(port, 9600, 0);
             mOutputStream = mSerialPort.getOutputStream();
             mInputStream = mSerialPort.getInputStream();
+            */
             
             /*
             if ("NAUTIZ_X6".equals(Build.MODEL)) {
