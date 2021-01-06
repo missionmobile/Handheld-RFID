@@ -51,7 +51,7 @@ public abstract class SerialPortActivity extends Activity {
             SerialPort.setUart3Enabled(true);
             SystemClock.sleep(200);
             
-            File port = new File(SerialPort.getSerialPath()); 
+            port = new File(SerialPort.getSerialPath()); 
 			SerialPort.setDevicePower(this, true); 
 			mSerialPort = new SerialPort(port, 9600, 0); 
             
