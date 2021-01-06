@@ -53,7 +53,25 @@ public abstract class SerialPortActivity extends Activity {
             SystemClock.sleep(200);
             
             //TK add X6 support
-            SerialPort.setDevicePower(this, true); 
+	        File port = new File("/dev/ttyMT3");
+	        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+	            // "/dev/ttyS0" for new Nautiz X2-C version
+	            port = new File("/dev/ttyS0");
+	        }
+	        if ("NAUTIZ_X6".equals(Build.MODEL)) {
+	            // "/dev/ttyHSL1" for new Nautiz X6
+	            port = new File("/dev/ttyHSL1");
+	        }
+            
+            setPower(false);
+            SystemClock.sleep(100);
+            setPower(true);
+            SystemClock.sleep(100);
+            mSerialPort = new SerialPort(port, 9600, 0);
+            mOutputStream = mSerialPort.getOutputStream();
+            mInputStream = mSerialPort.getInputStream();
+            
+            /*
             if ("NAUTIZ_X6".equals(Build.MODEL)) {
             // "/dev/ttyHSL1" for new Nautiz X6
             	mSerialPort = new SerialPort(new File("/dev/ttyHSL1"), 9600, 0);
@@ -64,6 +82,7 @@ public abstract class SerialPortActivity extends Activity {
             
             mOutputStream = mSerialPort.getOutputStream();
             mInputStream = mSerialPort.getInputStream();
+			*/
 
             /* Create a receiving thread */
             mReadThread = new ReadThread();
@@ -74,6 +93,34 @@ public abstract class SerialPortActivity extends Activity {
             cbCtx.error("Unknown Error");
         } catch (InvalidParameterException e){
             cbCtx.error("Wrong Config Error");
+        }
+    }
+
+    private void setPower(boolean enabled) {
+        if ("NAUTIZ_X6".equals(Build.MODEL)) {
+            setNx6PowerState(enabled);
+        } else {
+            setNx2PowerState(enabled);
+        }
+    }
+
+    public static void setNx2PowerState(boolean enabled){
+        SerialPort.setPower(enabled ? 0x17 : 0x18);
+        // The port debilitation has change on NX2-C so we have to enable both UART ports for either to work
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            SerialPort.setPortPower(2, enabled);
+        }
+        SerialPort.setPortPower(3, enabled);
+    }
+
+    private void setNx6PowerState(boolean powerOn) {
+        try {
+            ILovdreamDevice service = ILovdreamDevice.Stub.asInterface((IBinder) Class.forName("android.os.ServiceManager").getMethod("getService", new Class[]{String.class}).invoke(null, new Object[]{"lovd_device"}));
+            service.writeToFile("/sys/class/ext_dev/function/ext_dev_3v3_enable", powerOn ? "1" : "0");
+            service.writeToFile("/sys/class/ext_dev/function/ext_dev_5v_enable", powerOn ? "1" : "0");
+        } catch (Exception localException) {
+            localException.printStackTrace();
+            Log.e("IQUE", "can not get system service,is System ready?");
         }
     }
 
@@ -88,4 +135,5 @@ public abstract class SerialPortActivity extends Activity {
         SerialPort.setUart3Enabled(false);
         super.onDestroy();
     }
+    
 }
