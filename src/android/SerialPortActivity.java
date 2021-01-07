@@ -53,6 +53,7 @@ public abstract class SerialPortActivity extends Activity {
     }
 
     public SerialPortActivity(CallbackContext cbCtx) {
+        Log.i("app gestartet");
         this.cbCtx = cbCtx;
 
         try {
@@ -73,12 +74,14 @@ public abstract class SerialPortActivity extends Activity {
 
         // "/dev/ttyMT3" for Nautiz X2
         File port = new File("/dev/ttyMT3");
+            Log.i("default");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // "/dev/ttyS0" for new Nautiz X2-C version
             port = new File("/dev/ttyS0");
         }
         if ("NAUTIZ_X6".equals(Build.MODEL)) {
             // "/dev/ttyHSL1" for new Nautiz X6
+            Log.i("x6");
             port = new File("/dev/ttyHSL1");
         }
 
