@@ -23,7 +23,7 @@
         <source-file src="src/android/RFID.java" target-dir="src/de/mindsquare/rfid" />
         <source-file src="src/android/SearchTagActivity.java" target-dir="src/de/mindsquare/rfid" />
         <source-file src="src/android/SerialPortActivity.java" target-dir="src/de/mindsquare/rfid" />
-        <source-file src="src/android/x6-lovdream.jar" target-dir="libs" />
+        <!--<source-file src="src/android/x6-lovdream.jar" target-dir="libs" />-->
         <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     </platform>
 </plugin>
