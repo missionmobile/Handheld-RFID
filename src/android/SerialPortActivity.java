@@ -53,7 +53,7 @@ public abstract class SerialPortActivity extends Activity {
     }
 
     public SerialPortActivity(CallbackContext cbCtx) {
-        Log.write("app gestartet");
+        // Log.write("app gestartet");
         this.cbCtx = cbCtx;
 
         try {
@@ -74,17 +74,17 @@ public abstract class SerialPortActivity extends Activity {
 
         // "/dev/ttyMT3" for Nautiz X2
         File port = new File("/dev/ttyMT3");
-            Log.write("default");
+            // Log.write("default");
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // "/dev/ttyS0" for new Nautiz X2-C version
             port = new File("/dev/ttyS0");
         }
         if ("NAUTIZ_X6".equals(Build.MODEL)) {
             // "/dev/ttyHSL1" for new Nautiz X6
-            Log.write("x6");
+            // Log.write("x6");
             port = new File("/dev/ttyHSL1");
         }
-
+            
             setPower(false);
             SystemClock.sleep(100);
             setPower(true);
@@ -142,7 +142,7 @@ public abstract class SerialPortActivity extends Activity {
             service.writeToFile("/sys/class/ext_dev/function/ext_dev_5v_enable", powerOn ? "1" : "0");
         } catch (Exception localException) {
             localException.printStackTrace();
-            Log.error("IQUE", "can not get system service,is System ready?");
+            // Log.error("IQUE", "can not get system service,is System ready?");
         }
     }
 
