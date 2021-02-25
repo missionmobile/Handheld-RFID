@@ -7,6 +7,7 @@ import android.media.ToneGenerator;
 import org.apache.cordova.CallbackContext;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class SearchTagActivity extends SerialPortActivity {
     private static final String TAG = SearchTagActivity.class.getSimpleName();
@@ -36,7 +37,7 @@ public class SearchTagActivity extends SerialPortActivity {
         mTagType = null;
         mIDBitCount = null;
         mID = null;
-        cmd = 1;
+        cmd = 2; //Enable Tags first, 1 time
     }
 
     private class SendingThread extends Thread {
@@ -53,7 +54,8 @@ public class SearchTagActivity extends SerialPortActivity {
                     mByteReceivedBack = false;
                     try {
                         if (mOutputStream != null) {
-                            if (cmd == 1) {
+                            if (cmd == 1) { 
+                                //Start the Scan
                                 rxbuffer_Index = 0;
                                 txbuffer = new byte[50];
                                 txbuffer[0] = '0';
@@ -67,7 +69,7 @@ public class SearchTagActivity extends SerialPortActivity {
                                 Log.d(TAG, "SearchTag-GetTagType");
                                 //cmd=0;
                             } else if (cmd == 2) { // SetTagType only LF
-                                // TODO: Make sure all LF tags are enabled
+                                //Make sure all LF tags are enabled
                                 rxbuffer_Index = 0;
                                 txbuffer = new byte[50];
                                 txbuffer[0] = '0';
@@ -99,9 +101,9 @@ public class SearchTagActivity extends SerialPortActivity {
                         if (!mByteReceivedBack) {
                             // Timeout
                             if (cmd > 1)
-                                cmd = 1;
-                            else
-                                cmd = 2;
+                                cmd = 1; //Trigger Scan
+                            // else
+                            //     cmd = 2;
                         }
 
                     } catch (InterruptedException ignored) {
@@ -116,6 +118,7 @@ public class SearchTagActivity extends SerialPortActivity {
 
         synchronized (mByteReceivedBackSemaphore) {
 
+            Log.i("RFID:buffer-raw", Arrays.toString(buffer));
             int i;
             int temp1, temp2;
             for (i = 0; i < size; i++)                    // read the bytes and save them
@@ -128,7 +131,8 @@ public class SearchTagActivity extends SerialPortActivity {
                 temp2 = (rxbuffer_raw[i * 2 + 1] >= 65) ? (rxbuffer_raw[i * 2 + 1] - 55) : (rxbuffer_raw[i * 2 + 1] - 48);
                 rxbuffer[i] = (byte) ((temp1 << 4) + temp2);
             }
-            if (rxbuffer[1] == 0x01 && size == 9) {                            // transponder found
+            Log.i("RFID:buffer-size/processed", size + " / " + Arrays.toString(rxbuffer));
+            if (rxbuffer[1] == 0x01 && size >= 8) {   // transponder found. Size must be at least 8 to contain a scanned value.
                 int type;
                 type = rxbuffer[2];
                 if (type == 0x040)
@@ -175,11 +179,14 @@ public class SearchTagActivity extends SerialPortActivity {
                     mTagType = String.format("%02X Hex", rxbuffer[2]);
 
                 mIDBitCount = String.format("%d", rxbuffer[3]);
+                //Index 4  = byte size of TagID. Index 5 -> 5+size = TagID
+                //By the way: the last byte in the original (raw) buffer is always 13 which is line feed. (see Logging)
                 mID = String.format("%02X%02X%02X%02X%02X", rxbuffer[5], rxbuffer[6], rxbuffer[7], rxbuffer[8], rxbuffer[9]);
                 
                 if(rxbuffer[5] != 0 && rxbuffer[6] != 0 && rxbuffer[7] != 0 && rxbuffer[8] != 0){
                     ToneGenerator toneGen1 = new ToneGenerator(AudioManager.STREAM_MUSIC, 100);             
                     toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP,150);  
+                    Log.i("RFID:mID", mID);
                     this.cbCtx.success(mID);
                     t.interrupt();
                     mSendingThread.interrupt();

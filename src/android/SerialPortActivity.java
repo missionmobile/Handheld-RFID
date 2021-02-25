@@ -74,18 +74,18 @@ public abstract class SerialPortActivity extends Activity {
             
             //TK add X6 support
 
-        // "/dev/ttyMT3" for Nautiz X2
-        File port = new File("/dev/ttyMT3");
-            Log.i("SerialPortActivity", "set default port");
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // "/dev/ttyS0" for new Nautiz X2-C version
-            port = new File("/dev/ttyS0");
-        }
-        if ("NAUTIZ_X6".equals(Build.MODEL)) {
-            // "/dev/ttyHSL1" for new Nautiz X6
-            Log.i("SerialPortActivity", "Nx6 port");
-            port = new File("/dev/ttyHSL1");
-        }
+            // "/dev/ttyMT3" for Nautiz X2
+            File port = new File("/dev/ttyMT3");
+                Log.i("SerialPortActivity", "set default port");
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                // "/dev/ttyS0" for new Nautiz X2-C version
+                port = new File("/dev/ttyS0");
+            }
+            if ("NAUTIZ_X6".equals(Build.MODEL)) {
+                // "/dev/ttyHSL1" for new Nautiz X6
+                Log.i("SerialPortActivity", "Nx6 port");
+                port = new File("/dev/ttyHSL1");
+            }
             
             setPower(false);
             SystemClock.sleep(100);
